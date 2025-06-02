@@ -1,18 +1,17 @@
 package com.example.tfg_movil.viewmodel
 
+import android.content.ContentResolver
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import coil3.Uri
 import com.example.tfg_movil.model.authentication.DataStoreManager
 import com.example.tfg_movil.model.authentication.classes.AuthRepository
-import com.example.tfg_movil.model.authentication.classes.AuthRequest
 import com.example.tfg_movil.model.authentication.classes.AuthState
-import com.example.tfg_movil.model.authentication.classes.SignUpResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,37 +24,31 @@ class ViewModelAuth(
     private val _authState = MutableStateFlow<AuthState>(AuthState.Idle)
     val authState: StateFlow<AuthState> = _authState
 
-    private val _userDetails = MutableStateFlow<SignUpResponse?>(null)
-    val userDetails: StateFlow<SignUpResponse?> = _userDetails
-
     private val appContext = context.applicationContext
 
-    fun login(email: String, password: String) {
+    fun login(emailOrNickname: String, password: String) {
         _authState.value = AuthState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val result = authRepository.login(email, password)
+                val result = authRepository.login(emailOrNickname, password)
 
                 withContext(Dispatchers.Main) {
                     if (result.isSuccess) {
                         val loginResponse = result.getOrNull()
                         if (loginResponse != null) {
-
                             DataStoreManager.saveCredentials(
                                 appContext,
                                 loginResponse.accessToken,
-                                email,
+                                loginResponse.email,  // Asegúrate de que el backend devuelva el email si quieres guardarlo
                                 loginResponse.userId
                             )
                             _authState.value = AuthState.Authenticated(
-                                loginResponse.accessToken,
-                                email,
-                                loginResponse.userId
+                                accessToken = loginResponse.accessToken,
+                                email = loginResponse.email,
+                                userId = loginResponse.userId
                             )
-
                         } else {
-
                             _authState.value = AuthState.Error("Error en el servidor.")
                         }
                     } else {
@@ -66,28 +59,53 @@ class ViewModelAuth(
             } catch (e: Exception) {
                 Log.e("Auth", "Excepción durante el login: ${e.message}", e)
                 withContext(Dispatchers.Main) {
-                    _authState.value = AuthState.Error("An unexpected error occurred.")
+                    _authState.value = AuthState.Error("Error inesperado durante el login.")
                 }
             }
         }
     }
 
-
-
-    fun signUp(email: String, password: String) {
+    fun signUp(
+        nickname: String,
+        email: String,
+        password: String,
+        confirmPassword: String,
+        profilePhotoUri: Uri,
+        contentResolver: ContentResolver
+    ) {
         _authState.value = AuthState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
-            val result = authRepository.signUp(email, password)
+            try {
+                val result = authRepository.signUp(nickname, email, password, confirmPassword, profilePhotoUri, contentResolver)
 
-            withContext(Dispatchers.Main) {
-                if (result.isSuccess) {
-                    login(email, password)
-                    _authState.value = AuthState.Success("User registered successfully.")
-                } else {
-                    val errorMessage = result.exceptionOrNull()?.message ?: "Registration failed."
-
-                    _authState.value = AuthState.Error(errorMessage)
+                withContext(Dispatchers.Main) {
+                    if (result.isSuccess) {
+                        val response = result.getOrNull()
+                        if (response != null) {
+                            DataStoreManager.saveCredentials(
+                                appContext,
+                                response.accessToken,
+                                email,
+                                userId = -1 // en el registro no recibes el userId, puedes ignorarlo o usar -1
+                            )
+                            _authState.value = AuthState.Authenticated(
+                                accessToken = response.accessToken,
+                                email = email,
+                                userId = -1
+                            )
+                        } else {
+                            _authState.value = AuthState.Error("Error en el servidor.")
+                        }
+                    } else {
+                        val errorMessage = result.exceptionOrNull()?.message ?: "Registro fallido."
+                        _authState.value = AuthState.Error(errorMessage)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Auth", "Excepción durante el registro: ${e.message}", e)
+                withContext(Dispatchers.Main) {
+                    _authState.value = AuthState.Error("Error inesperado durante el registro.")
                 }
             }
         }
@@ -122,3 +140,5 @@ class ViewModelAuth(
         }
     }
 }
+
+
