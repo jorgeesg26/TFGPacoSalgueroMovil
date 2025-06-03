@@ -39,12 +39,15 @@ import com.example.tfg_movil.viewmodel.ViewModelAuth
 
 @Composable
 fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var user_id by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val authState by viewModelAuth.authState.collectAsState()
-    val context = LocalContext.current
+    var nickname by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+    var profilePhotoUri by remember { mutableStateOf<android.net.Uri?>(null) }
 
     LaunchedEffect(authState) {
         when (authState) {
@@ -69,7 +72,18 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
+        OutlinedTextField(
+            value = nickname,
+            onValueChange = { nickname = it },
+            label = { Text("Nickname") }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirm Password") },
+            visualTransformation = PasswordVisualTransformation()
+        )
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
@@ -100,7 +114,17 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { viewModelAuth.signUp(email, password) },
+            onClick = {
+                profilePhotoUri?.let { uri ->
+                    viewModelAuth.signUp(
+                        nickname,
+                        email,
+                        password,
+                        confirmPassword,
+                        uri,
+                        context.contentResolver                    )
+                }
+            },
             enabled = authState != AuthState.Loading,
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.onPrimaryContainer,

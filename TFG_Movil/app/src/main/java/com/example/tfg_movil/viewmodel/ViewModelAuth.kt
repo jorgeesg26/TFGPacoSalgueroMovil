@@ -70,7 +70,7 @@ class ViewModelAuth(
         email: String,
         password: String,
         confirmPassword: String,
-        profilePhotoUri: Uri,
+        profilePhotoUri: android.net.Uri,
         contentResolver: ContentResolver
     ) {
         _authState.value = AuthState.Loading

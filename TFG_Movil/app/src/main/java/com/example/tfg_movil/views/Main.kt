@@ -47,7 +47,6 @@ fun Main(
     var showDialog by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val authState by authViewModel.authState.collectAsState()
-    val userDetails by authViewModel.userDetails.collectAsState()
 
     LaunchedEffect(Unit) {    }
 
@@ -77,10 +76,10 @@ fun Main(
 
             Text(
                 text = if (authState is AuthState.Authenticated) {
-                    "${stringResource(id = R.string.Welcome)} ${userDetails?.email ?: ""} !"
+                    "${stringResource(id = R.string.Welcome)} ${(authState as AuthState.Authenticated).email} !"
                 } else {
                     stringResource(id = R.string.WelcomeNoLogin)
-                } ,
+                },
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )

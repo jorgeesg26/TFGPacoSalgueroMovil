@@ -1,7 +1,6 @@
 package com.example.tfg_movil.model.authentication.classes
 
 import android.content.ContentResolver
-import android.net.Uri
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -12,7 +11,7 @@ class AuthRepository {
 
     suspend fun login(emailOrNickname: String, password: String): Result<LoginResponse> {
         return try {
-            val response = authClient.login(LoginRequest(emailOrNickname, password))
+            val response = authClient.login(AuthRequest(emailOrNickname, password))
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)
@@ -24,7 +23,7 @@ class AuthRepository {
         email: String,
         password: String,
         confirmPassword: String,
-        profilePhotoUri: Uri,
+        profilePhotoUri: android.net.Uri,
         contentResolver: ContentResolver
     ): Result<SignUpResponse> {
         return try {
