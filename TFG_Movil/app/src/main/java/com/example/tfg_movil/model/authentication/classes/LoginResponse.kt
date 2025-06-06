@@ -1,7 +1,8 @@
 package com.example.tfg_movil.model.authentication.classes
 
+import com.google.gson.annotations.SerializedName
+
 data class LoginResponse(
-    val accessToken: String,
-    val userId: Int,
-    val email: String
+    @SerializedName("StringToken") val accessToken: String,
+    @SerializedName("UserId") val userId: Int
 )

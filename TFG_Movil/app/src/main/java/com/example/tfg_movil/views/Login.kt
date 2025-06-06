@@ -47,6 +47,7 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
     val authState by viewModelAuth.authState.collectAsState()
     val context = LocalContext.current
 
+
     LaunchedEffect(authState) {
         when (authState) {
             is AuthState.Authenticated -> navController.navigate(RutasNavegacion.Main.route)
@@ -56,7 +57,7 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
                 Log.d("AuthState", "Reiniciado")
             }
             else -> Unit
-        }
+         }
     }
 
     Column(

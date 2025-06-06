@@ -11,7 +11,11 @@ class AuthRepository {
 
     suspend fun login(emailOrNickname: String, password: String): Result<LoginResponse> {
         return try {
-            val response = authClient.login(AuthRequest(emailOrNickname, password))
+            // Usamos los nombres exactos que espera el backend
+            val response = authClient.login(AuthRequest(
+                userEmailOrNickname = emailOrNickname,
+                password = password
+            ))
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

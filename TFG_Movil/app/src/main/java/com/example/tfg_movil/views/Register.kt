@@ -122,7 +122,7 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
                         password,
                         confirmPassword,
                         uri,
-                        context.contentResolver                    )
+                        context.contentResolver                     )
                 }
             },
             enabled = authState != AuthState.Loading,

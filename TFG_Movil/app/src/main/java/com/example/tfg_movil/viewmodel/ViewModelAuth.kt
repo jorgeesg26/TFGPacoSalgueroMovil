@@ -40,12 +40,12 @@ class ViewModelAuth(
                             DataStoreManager.saveCredentials(
                                 appContext,
                                 loginResponse.accessToken,
-                                loginResponse.email,  // Asegúrate de que el backend devuelva el email si quieres guardarlo
+                                emailOrNickname,
                                 loginResponse.userId
                             )
                             _authState.value = AuthState.Authenticated(
                                 accessToken = loginResponse.accessToken,
-                                email = loginResponse.email,
+                                email = emailOrNickname,
                                 userId = loginResponse.userId
                             )
                         } else {
