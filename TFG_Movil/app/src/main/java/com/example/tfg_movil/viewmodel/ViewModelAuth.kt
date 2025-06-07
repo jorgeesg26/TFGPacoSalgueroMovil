@@ -49,7 +49,7 @@ class ViewModelAuth(
                                 userId = loginResponse.userId
                             )
                         } else {
-                            _authState.value = AuthState.Error("Error en el servidor.")
+                            _authState.value = AuthState.Error("Credenciales incorrectas.")
                         }
                     } else {
                         val errorMessage = result.exceptionOrNull()?.message ?: "Login fallido."

@@ -11,7 +11,7 @@ import javax.net.ssl.X509TrustManager
 
 object RetrofitInstance {
     // Para emulador Android (10.0.2.2 = localhost del host)
-    private const val BASE_URL = "https://10.0.2.2:7077"  // Asegúrate que coincide con tu puerto HTTPS del servidor C#
+    private const val BASE_URL = "https://10.0.2.2:7077/"
     private val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
         override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
