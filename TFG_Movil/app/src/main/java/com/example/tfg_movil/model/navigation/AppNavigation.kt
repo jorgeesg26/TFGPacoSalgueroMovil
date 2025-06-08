@@ -20,12 +20,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.ui.unit.dp
+import com.example.tfg_movil.viewmodel.ViewModelService
 import com.example.tfg_movil.views.Main
 import com.example.tfg_movil.views.Menu
+import com.example.tfg_movil.views.ServiceScreen
 
 
 @Composable
-fun AppNavigation(navController: NavHostController, authState: AuthState, authViewModel: ViewModelAuth) {
+fun AppNavigation(navController: NavHostController, authState: AuthState, authViewModel: ViewModelAuth,serviceViewModel: ViewModelService) {
     val context = LocalContext.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -58,6 +60,11 @@ fun AppNavigation(navController: NavHostController, authState: AuthState, authVi
             composable(RutasNavegacion.Menu.route) {
                 Menu(authViewModel, navController)
             }
+            composable(RutasNavegacion.Servicios.route) {
+                ServiceScreen(serviceViewModel)
+            }
+
+
         }
     }
 }

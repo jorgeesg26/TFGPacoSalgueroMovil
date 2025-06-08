@@ -1,5 +1,6 @@
 package com.example.tfg_movil.model.authentication.classes
 
+import com.example.tfg_movil.model.services.ServiceClient
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -37,4 +38,8 @@ object RetrofitInstance {
     val authClient: AuthClient by lazy {
         retrofit.create(AuthClient::class.java)
     }
+    val serviceClient: ServiceClient by lazy {
+        retrofit.create(ServiceClient::class.java)
+    }
+
 }

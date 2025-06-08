@@ -19,8 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tfg_movil.model.authentication.classes.AuthRepository
 import com.example.tfg_movil.model.navigation.AppNavigation
 import com.example.tfg_movil.model.navigation.NavigationDrawer
+import com.example.tfg_movil.model.services.ServiceRepository
 import com.example.tfg_movil.ui.theme.TFG_MovilTheme
 import com.example.tfg_movil.viewmodel.ViewModelAuth
+import com.example.tfg_movil.viewmodel.ViewModelService
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +30,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
+            val serviceViewModel: ViewModelService = viewModel {
+                ViewModelService(ServiceRepository())
+            }
+
 
             val authViewModel: ViewModelAuth = viewModel { ViewModelAuth(AuthRepository(), context) }
 
@@ -36,7 +42,13 @@ class MainActivity : ComponentActivity() {
 
             TFG_MovilTheme {
                 NavigationDrawer(navController) {
-                    AppNavigation(navController, authViewModel.authState.collectAsState().value, authViewModel)
+                    AppNavigation(
+                        navController = navController,
+                        authState = authViewModel.authState.collectAsState().value,
+                        authViewModel = authViewModel,
+                        serviceViewModel = serviceViewModel
+                    )
+
                 }
             }
         }
