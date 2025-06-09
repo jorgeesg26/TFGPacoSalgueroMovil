@@ -15,16 +15,17 @@ class ViewModelService(private val repository: ServiceRepository) : ViewModel() 
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    private val _editingService = MutableStateFlow<Service?>(null)
+    val editingService: StateFlow<Service?> = _editingService
+
     fun loadServices() {
         viewModelScope.launch {
-            val result = repository.fetchServices()
-            if (result.isSuccess) {
-                _services.value = result.getOrDefault(emptyList())
-            } else {
-                _error.value = result.exceptionOrNull()?.message
-            }
+            repository.fetchServices()
+                .onSuccess { _services.value = it }
+                .onFailure { _error.value = it.message }
         }
     }
+
     fun createService(service: Service) {
         viewModelScope.launch {
             repository.createService(service)
@@ -33,10 +34,10 @@ class ViewModelService(private val repository: ServiceRepository) : ViewModel() 
         }
     }
 
-    fun updateService(id: Int, service: Service) {
+    fun updateService(service: Service) {
         viewModelScope.launch {
-            repository.updateService(id, service)
-                .onSuccess { loadServices() }
+            repository.updateService(service.id, service)
+                .onSuccess { loadServices(); _editingService.value = null }
                 .onFailure { _error.value = it.message }
         }
     }
@@ -47,5 +48,13 @@ class ViewModelService(private val repository: ServiceRepository) : ViewModel() 
                 .onSuccess { loadServices() }
                 .onFailure { _error.value = it.message }
         }
+    }
+
+    fun startEditing(service: Service) {
+        _editingService.value = service
+    }
+
+    fun cancelEditing() {
+        _editingService.value = null
     }
 }

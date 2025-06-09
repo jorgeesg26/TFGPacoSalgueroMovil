@@ -11,6 +11,7 @@ import retrofit2.http.Path
 interface ServiceClient {
     @GET("/api/Service/get_services")
     suspend fun getAllServices(): List<Service>
+
     @POST("/api/Service/create")
     suspend fun createService(@Body service: Service): Response<Unit>
 

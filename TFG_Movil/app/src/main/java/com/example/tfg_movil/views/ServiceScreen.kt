@@ -34,59 +34,47 @@ import com.example.tfg_movil.viewmodel.ViewModelService
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 
-
 @Composable
 fun ServiceScreen(viewModel: ViewModelService) {
     val servicios by viewModel.services.collectAsState()
-    val context = LocalContext.current
+    val editing by viewModel.editingService.collectAsState()
 
-    var nombre by remember { mutableStateOf("") }
-    var abreviatura by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
+    LaunchedEffect(Unit) { viewModel.loadServices() }
+    Spacer(modifier = Modifier.height(20.dp))
 
-    LaunchedEffect(Unit) {
-        viewModel.loadServices()
-    }
-    Spacer(modifier = Modifier.height(100.dp))
-
-    Column(modifier = Modifier.padding(16.dp)) {
-        TextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
-        TextField(value = abreviatura, onValueChange = { abreviatura = it }, label = { Text("Abreviatura") })
-        TextField(value = color, onValueChange = { color = it }, label = { Text("Color") })
-
-        Spacer(Modifier.height(8.dp))
-
-        Button(onClick = {
-            viewModel.createService(Service(nombre = nombre, abreviatura = abreviatura, color = color))
-            nombre = ""; abreviatura = ""; color = ""
-        }) {
-            Text("Crear servicio")
-        }
-
+    Column(Modifier.padding(16.dp)) {
+        Text("Gestión de Servicios", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(16.dp))
 
+        ServiceForm(
+            service = editing,
+            onSave = { if (it.id == 0) viewModel.createService(it) else viewModel.updateService(it) },
+            onCancel = viewModel::cancelEditing
+        )
+
+        Spacer(Modifier.height(16.dp))
         LazyColumn {
             items(servicios) { s ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth().padding(4.dp)
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                 ) {
-                    Column {
-                        Text(text = s.nombre, style = MaterialTheme.typography.bodyLarge)
-                        Text(text = s.abreviatura)
-                        Text(text = s.color)
-                    }
-                    Row {
-                        IconButton(onClick = {
-                            viewModel.updateService(s.id, s.copy(nombre = "Editado"))
-                        }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Editar")
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text("${s.nombre} (${s.abreviatura})", style = MaterialTheme.typography.titleMedium)
+                            Text("Color: ${s.color}")
                         }
-                        IconButton(onClick = {
-                            viewModel.deleteService(s.id)
-                        }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Borrar")
+                        Row {
+                            IconButton(onClick = { viewModel.startEditing(s) }) {
+                                Icon(Icons.Filled.Edit, contentDescription = "Editar")
+                            }
+                            IconButton(onClick = { viewModel.deleteService(s.id) }) {
+                                Icon(Icons.Filled.Delete, contentDescription = "Borrar")
+                            }
                         }
                     }
                 }
@@ -95,4 +83,34 @@ fun ServiceScreen(viewModel: ViewModelService) {
     }
 }
 
+@Composable
+fun ServiceForm(
+    service: Service?,
+    onSave: (Service) -> Unit,
+    onCancel: () -> Unit
+) {
+    var nombre by remember { mutableStateOf(service?.nombre ?: "") }
+    var abreviatura by remember { mutableStateOf(service?.abreviatura ?: "") }
+    var color by remember { mutableStateOf(service?.color ?: "") }
+    Spacer(modifier = Modifier.height(20.dp))
 
+    Column(Modifier.fillMaxWidth()) {
+        OutlinedTextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = abreviatura, onValueChange = { abreviatura = it }, label = { Text("Abreviatura") }, modifier = Modifier.fillMaxWidth())
+        OutlinedTextField(value = color, onValueChange = { color = it }, label = { Text("Color") }, modifier = Modifier.fillMaxWidth())
+
+        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth().padding(top = 8.dp)) {
+            if (service != null) {
+                TextButton(onClick = onCancel) { Text("Cancelar") }
+            }
+            Button(onClick = {
+                if (nombre.isNotBlank() && abreviatura.isNotBlank() && color.isNotBlank()) {
+                    onSave(Service(id = service?.id ?: 0, nombre = nombre, abreviatura = abreviatura, color = color))
+                    nombre = ""; abreviatura = ""; color = ""
+                }
+            }) {
+                Text(if (service != null) "Guardar cambios" else "Crear")
+            }
+        }
+    }
+}
