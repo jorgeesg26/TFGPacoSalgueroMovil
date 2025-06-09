@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.AccountCircle
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Person
@@ -82,7 +83,7 @@ fun NavigationDrawer(
         ),NavigationItems(
             title = "Servicios",
             selectedIcon = Icons.Filled.Notifications,
-            unselectedIcon = Icons.Outlined.Home,
+            unselectedIcon = Icons.Outlined.Check,
             route = RutasNavegacion.Servicios.route
         )
 

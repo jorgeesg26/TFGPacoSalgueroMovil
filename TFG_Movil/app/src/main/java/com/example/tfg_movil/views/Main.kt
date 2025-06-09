@@ -48,7 +48,7 @@ fun Main(
     val context = LocalContext.current
     val authState by authViewModel.authState.collectAsState()
 
-    LaunchedEffect(Unit) {    }
+    LaunchedEffect(Unit) { }
 
     Scaffold { paddingValues ->
         Column(

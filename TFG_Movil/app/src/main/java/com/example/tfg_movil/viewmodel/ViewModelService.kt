@@ -25,4 +25,27 @@ class ViewModelService(private val repository: ServiceRepository) : ViewModel() 
             }
         }
     }
+    fun createService(service: Service) {
+        viewModelScope.launch {
+            repository.createService(service)
+                .onSuccess { loadServices() }
+                .onFailure { _error.value = it.message }
+        }
+    }
+
+    fun updateService(id: Int, service: Service) {
+        viewModelScope.launch {
+            repository.updateService(id, service)
+                .onSuccess { loadServices() }
+                .onFailure { _error.value = it.message }
+        }
+    }
+
+    fun deleteService(id: Int) {
+        viewModelScope.launch {
+            repository.deleteService(id)
+                .onSuccess { loadServices() }
+                .onFailure { _error.value = it.message }
+        }
+    }
 }

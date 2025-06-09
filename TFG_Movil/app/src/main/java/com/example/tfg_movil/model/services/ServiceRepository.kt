@@ -13,4 +13,15 @@ class ServiceRepository {
             Result.failure(e)
         }
     }
+    suspend fun createService(service: Service): Result<Unit> = runCatching {
+        client.createService(service)
+    }
+
+    suspend fun updateService(id: Int, service: Service): Result<Unit> = runCatching {
+        client.updateService(id, service)
+    }
+
+    suspend fun deleteService(id: Int): Result<Unit> = runCatching {
+        client.deleteService(id)
+    }
 }

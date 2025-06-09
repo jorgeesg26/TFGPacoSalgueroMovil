@@ -13,6 +13,15 @@ fun Menu(viewModelAuth: ViewModelAuth, navController: NavController) {
 
     Column {
         Text("Menu works!");
+        Text("Menu works!");Text("Menu works!");Text("Menu works!");Text("Menu works!");
+        Text("Menu works!");
+        Text("Menu works!");
+        Text("Menu works!");
+        Text("Menu works!");
+        Text("Menu works!");
+
+
+
     }
 
 }
