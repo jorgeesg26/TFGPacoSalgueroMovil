@@ -1,5 +1,6 @@
 package com.example.tfg_movil.model.authentication.classes
 
+import com.example.tfg_movil.model.customer.CustomerClient
 import com.example.tfg_movil.model.services.ServiceClient
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -40,6 +41,9 @@ object RetrofitInstance {
     }
     val serviceClient: ServiceClient by lazy {
         retrofit.create(ServiceClient::class.java)
+    }
+    val customerClient: CustomerClient by lazy {
+        retrofit.create(CustomerClient::class.java)
     }
 
 }

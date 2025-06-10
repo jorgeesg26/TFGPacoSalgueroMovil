@@ -3,25 +3,19 @@ package com.example.tfg_movil
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.tfg_movil.model.authentication.classes.AuthRepository
+import com.example.tfg_movil.model.customer.CustomerRepository
 import com.example.tfg_movil.model.navigation.AppNavigation
 import com.example.tfg_movil.model.navigation.NavigationDrawer
 import com.example.tfg_movil.model.services.ServiceRepository
 import com.example.tfg_movil.ui.theme.TFG_MovilTheme
 import com.example.tfg_movil.viewmodel.ViewModelAuth
+import com.example.tfg_movil.viewmodel.ViewModelCustomer
 import com.example.tfg_movil.viewmodel.ViewModelService
 
 class MainActivity : ComponentActivity() {
@@ -32,6 +26,9 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             val serviceViewModel: ViewModelService = viewModel {
                 ViewModelService(ServiceRepository())
+            }
+            val customerViewModel: ViewModelCustomer = viewModel {
+                ViewModelCustomer(CustomerRepository())
             }
 
 
@@ -46,7 +43,8 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         authState = authViewModel.authState.collectAsState().value,
                         authViewModel = authViewModel,
-                        serviceViewModel = serviceViewModel
+                        serviceViewModel = serviceViewModel,
+                        customerViewModel = customerViewModel
                     )
 
                 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -74,17 +75,16 @@ fun NavigationDrawer(
             selectedIcon = Icons.Filled.AccountCircle,
             unselectedIcon = Icons.Outlined.AccountCircle,
             route = RutasNavegacion.Register.route
-        ),
-        NavigationItems(
-            title = stringResource(id = R.string.Menu),
-            selectedIcon = Icons.Filled.Menu,
-            unselectedIcon = Icons.Outlined.Menu,
-            route = RutasNavegacion.Menu.route
         ),NavigationItems(
             title = "Servicios",
             selectedIcon = Icons.Filled.Notifications,
             unselectedIcon = Icons.Outlined.Check,
             route = RutasNavegacion.Servicios.route
+        ),NavigationItems(
+            title = "Customer",
+            selectedIcon = Icons.Filled.Face,
+            unselectedIcon = Icons.Outlined.Check,
+            route = RutasNavegacion.Customer.route
         )
 
     )
