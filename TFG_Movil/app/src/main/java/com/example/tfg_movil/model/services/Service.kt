@@ -3,16 +3,16 @@ package com.example.tfg_movil.model.services
 import com.google.gson.annotations.SerializedName
 
 data class Service(
-    @SerializedName("Id")
+    @SerializedName("id")
     val id: Int,
 
-    @SerializedName("Nombre")
+    @SerializedName("nombre")
     val nombre: String,
 
-    @SerializedName("Abreviatura")
+    @SerializedName("abreviatura")
     val abreviatura: String,
 
-    @SerializedName("Color")
+    @SerializedName("color")
     val color: String
 ) {
     constructor() : this(0, "", "", "")

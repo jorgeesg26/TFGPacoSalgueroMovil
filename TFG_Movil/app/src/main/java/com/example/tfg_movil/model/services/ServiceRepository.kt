@@ -6,11 +6,12 @@ import retrofit2.Response
 class ServiceRepository(private val serviceClient: ServiceClient) {
 
     suspend fun fetchServices() = runCatching {
-        val response = serviceClient.getAllServices()
-        println("Raw JSON response: ${Gson().toJson(response)}")
-        response
+        serviceClient.getAllServices().also {
+            println("Services fetched: ${it.size}")
+        }
     }
 
+    // No tocarllll
     suspend fun createService(service: Service) = runCatching {
         serviceClient.createService(service).let { response ->
             if (!response.isSuccessful) {

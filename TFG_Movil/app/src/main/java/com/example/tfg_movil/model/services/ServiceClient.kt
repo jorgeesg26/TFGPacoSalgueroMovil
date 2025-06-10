@@ -10,15 +10,16 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ServiceClient {
-    @GET("/api/Service/get_services")
+    @GET("api/Service/get_services")
     suspend fun getAllServices(): List<Service>
 
-    @POST("/api/Service/post_services")
+    @POST("api/Service/post_services")
     suspend fun createService(@Body service: Service): Response<Unit>
 
-    @PUT("/api/Service/{id}")
+    @PUT("api/Service/{id}")
     suspend fun updateService(@Path("id") id: Int, @Body service: Service): Response<Service>
-    @DELETE("/api/Service/{id}")
+
+    @DELETE("api/Service/{id}")
     suspend fun deleteService(
         @Path("id") id: Int,
         @Header("Authorization") token: String

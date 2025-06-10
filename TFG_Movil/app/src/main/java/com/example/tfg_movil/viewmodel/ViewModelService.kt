@@ -60,7 +60,6 @@ class ViewModelService(
                         if (it.id == service.id) updatedService else it
                     }
                     _editingService.value = null
-                    _error.value = "Servicio actualizado"
                 }
                 .onFailure { e ->
                     _error.value = "Error actualizando: ${e.message}"
@@ -69,14 +68,17 @@ class ViewModelService(
     }
 
     fun deleteService(id: Int) {
+        println("Intentando eliminar servicio con ID: $id")
         viewModelScope.launch {
             val token = DataStoreManager.getAccessTokenSync(context) ?: ""
+            println("Token recuperado: '$token'")
             repository.deleteService(id, token)
                 .onSuccess {
+                    println("Servicio eliminado con éxito")
                     _services.value = _services.value.filter { it.id != id }
-                    _error.value = "Servicio eliminado correctamente"
                 }
                 .onFailure { e ->
+                    println("Fallo al eliminar: ${e.message}")
                     _error.value = when {
                         e.message?.contains("404") == true -> "El servicio ya no existe"
                         else -> "Error al eliminar: ${e.message}"

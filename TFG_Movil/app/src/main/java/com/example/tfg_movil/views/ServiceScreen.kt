@@ -72,6 +72,12 @@ fun ServiceScreen() {
         viewModel.loadServices()
     }
 
+    LaunchedEffect(editingService) {
+        nombre = editingService?.nombre ?: ""
+        abreviatura = editingService?.abreviatura ?: ""
+        color = editingService?.color ?: ""
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -156,6 +162,7 @@ fun ServiceScreen() {
                     Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                         IconButton(onClick = {
                             viewModel.startEditing(service)
+                            println("edit clicked")
                         }) {
                             Icon(Icons.Default.Edit, contentDescription = "Editar")
                         }
@@ -167,6 +174,7 @@ fun ServiceScreen() {
                             }
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "Eliminar")
+                            println("borrao clicked")
                         }
                     }
                 }
