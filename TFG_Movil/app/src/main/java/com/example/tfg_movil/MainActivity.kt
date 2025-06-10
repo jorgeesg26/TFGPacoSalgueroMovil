@@ -1,5 +1,6 @@
 package com.example.tfg_movil
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.tfg_movil.model.authentication.classes.AuthRepository
+import com.example.tfg_movil.model.authentication.classes.RetrofitInstance
 import com.example.tfg_movil.model.customer.CustomerRepository
 import com.example.tfg_movil.model.navigation.AppNavigation
 import com.example.tfg_movil.model.navigation.NavigationDrawer
@@ -24,8 +26,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
+            val serviceClient = RetrofitInstance.serviceClient
+
             val serviceViewModel: ViewModelService = viewModel {
-                ViewModelService(ServiceRepository())
+                ViewModelService(Application(),ServiceRepository(serviceClient))
             }
             val customerViewModel: ViewModelCustomer = viewModel {
                 ViewModelCustomer(CustomerRepository())

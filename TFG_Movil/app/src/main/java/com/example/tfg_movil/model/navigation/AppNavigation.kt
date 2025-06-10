@@ -59,7 +59,7 @@ fun AppNavigation(navController: NavHostController, authState: AuthState, authVi
                 Register(authViewModel, navController)
             }
             composable(RutasNavegacion.Servicios.route) {
-                ServiceScreen(serviceViewModel)
+                ServiceScreen()
             }
             composable(RutasNavegacion.Customer.route) {
                 CustomerScreen(customerViewModel)
