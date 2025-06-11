@@ -36,6 +36,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
+        Spacer(Modifier.height(100.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
             Button(onClick = {
                 currentDate.value = currentDate.value.minusMonths(1)
