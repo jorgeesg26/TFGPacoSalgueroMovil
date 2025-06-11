@@ -7,4 +7,7 @@ sealed class RutasNavegacion(val route: String) {
     object Servicios : RutasNavegacion("Servicios")
     object Customer : RutasNavegacion("Customer")
     object PaymentMethod : RutasNavegacion("PaymentMethod")
+    object Agenda : RutasNavegacion("Agenda")
+    object Calendar : RutasNavegacion("Calendar")
+
 }

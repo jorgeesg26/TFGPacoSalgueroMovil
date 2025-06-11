@@ -1,8 +1,10 @@
 package com.example.tfg_movil.model.authentication.classes
 
+import com.example.tfg_movil.model.agenda.AgendaClient
 import com.example.tfg_movil.model.customer.CustomerClient
 import com.example.tfg_movil.model.services.ServiceClient
 import com.example.tfg_movil.model.paymentMethod.PaymentMethodClient
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,13 +29,18 @@ object RetrofitInstance {
             }.socketFactory,
             trustAllCerts[0] as X509TrustManager
         )
-        .hostnameVerifier { _, _ -> true } // Ignorar verificación de hostname
+        .hostnameVerifier { _, _ -> true }
         .build()
+
+    private val gson = GsonBuilder()
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        .create()
+
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(unsafeOkHttpClient) // Esto es para usar cliente personalizado
-            .addConverterFactory(GsonConverterFactory.create())
+            .client(unsafeOkHttpClient)
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 
@@ -50,4 +57,7 @@ object RetrofitInstance {
         retrofit.create(PaymentMethodClient::class.java)
     }
 
+    val agendaClient: AgendaClient by lazy {
+        retrofit.create(AgendaClient::class.java)
+    }
 }

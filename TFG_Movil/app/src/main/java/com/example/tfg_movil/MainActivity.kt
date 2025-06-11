@@ -21,6 +21,8 @@ import com.example.tfg_movil.viewmodel.ViewModelAuth
 import com.example.tfg_movil.viewmodel.ViewModelCustomer
 import com.example.tfg_movil.viewmodel.ViewModelPaymentMethod
 import com.example.tfg_movil.viewmodel.ViewModelService
+import com.example.tfg_movil.model.agenda.AgendaRepository
+import com.example.tfg_movil.viewmodel.ViewModelAgenda
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,8 @@ class MainActivity : ComponentActivity() {
             val application = context.applicationContext as Application
             val serviceClient = RetrofitInstance.serviceClient
             val paymentMethodClient = RetrofitInstance.paymentMethodClient
+            val agendaClient = RetrofitInstance.agendaClient
+
 
             val serviceViewModel: ViewModelService = viewModel {
                 ViewModelService(Application(),ServiceRepository(serviceClient))
@@ -39,10 +43,13 @@ class MainActivity : ComponentActivity() {
                 ViewModelCustomer(CustomerRepository())
             }
 
+
             val paymentMethodViewModel = ViewModelPaymentMethod(application, PaymentMethodRepository(paymentMethodClient))
 
 
             val authViewModel: ViewModelAuth = viewModel { ViewModelAuth(AuthRepository(), context) }
+
+            val agendaViewModel = ViewModelAgenda(application, AgendaRepository(agendaClient))
 
             LaunchedEffect(Unit) {
             }
@@ -55,7 +62,8 @@ class MainActivity : ComponentActivity() {
                         authViewModel = authViewModel,
                         serviceViewModel = serviceViewModel,
                         customerViewModel = customerViewModel,
-                        paymentMethodViewModel = paymentMethodViewModel
+                        paymentMethodViewModel = paymentMethodViewModel,
+                        agendaViewModel = agendaViewModel
                     )
 
                 }

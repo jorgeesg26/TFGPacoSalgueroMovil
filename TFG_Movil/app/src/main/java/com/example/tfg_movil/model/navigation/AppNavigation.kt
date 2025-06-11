@@ -20,9 +20,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.ui.unit.dp
+import com.example.tfg_movil.viewmodel.ViewModelAgenda
 import com.example.tfg_movil.viewmodel.ViewModelCustomer
 import com.example.tfg_movil.viewmodel.ViewModelPaymentMethod
 import com.example.tfg_movil.viewmodel.ViewModelService
+import com.example.tfg_movil.views.AgendaScreen
+import com.example.tfg_movil.views.CalendarScreen
 import com.example.tfg_movil.views.CustomerScreen
 import com.example.tfg_movil.views.Main
 import com.example.tfg_movil.views.PaymentMethodScreen
@@ -32,7 +35,7 @@ import com.example.tfg_movil.views.ServiceScreen
 @Composable
 fun AppNavigation(navController: NavHostController, authState: AuthState, authViewModel: ViewModelAuth,
                   serviceViewModel: ViewModelService,customerViewModel: ViewModelCustomer,
-                  paymentMethodViewModel: ViewModelPaymentMethod) {
+                  paymentMethodViewModel: ViewModelPaymentMethod, agendaViewModel: ViewModelAgenda) {
 
 
     val context = LocalContext.current
@@ -72,6 +75,12 @@ fun AppNavigation(navController: NavHostController, authState: AuthState, authVi
             }
             composable(RutasNavegacion.PaymentMethod.route) {
                 PaymentMethodScreen(paymentMethodViewModel)
+            }
+            composable(RutasNavegacion.Agenda.route) {
+                AgendaScreen(agendaViewModel)
+            }
+            composable(RutasNavegacion.Calendar.route) {
+                CalendarScreen(agendaViewModel)
             }
         }
     }
