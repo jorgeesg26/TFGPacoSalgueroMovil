@@ -22,7 +22,7 @@ class ViewModelCustomer(private val repository: CustomerRepository) : ViewModel(
                 .onSuccess { _customers.value = it }
                 .onFailure { _error.value = it.message }
         }
-     }
+    }
 
     fun createCustomer(dto: CustomerDTO) {
         viewModelScope.launch {
@@ -34,7 +34,19 @@ class ViewModelCustomer(private val repository: CustomerRepository) : ViewModel(
 
     fun updateCustomer(id: Int, customer: Customer) {
         viewModelScope.launch {
-            repository.updateCustomer(id, customer)
+            val dto = CustomerDTO(
+                id = customer.id,
+                cif = customer.cif,
+                name = customer.name,
+                adress = customer.adress,
+                postalCode = customer.postalCode,
+                placeOfResidence = customer.placeOfResidence,
+                phoneNumber = customer.phoneNumber,
+                email = customer.email,
+                adminEmail = customer.adminEmail,
+                paymentMethodId = customer.paymentMethodId
+            )
+            repository.updateCustomer(id, dto)
                 .onSuccess { loadCustomers() }
                 .onFailure { _error.value = it.message }
         }

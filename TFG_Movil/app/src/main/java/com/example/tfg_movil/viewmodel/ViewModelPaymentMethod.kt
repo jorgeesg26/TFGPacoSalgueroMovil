@@ -38,7 +38,6 @@ class ViewModelPaymentMethod(
         viewModelScope.launch {
             repository.create(method)
                 .onSuccess {
-                    _error.value = "¡Método creado!"
                     loadMethods()
                 }
                 .onFailure { _error.value = "Error creando: ${it.message}" }

@@ -12,7 +12,7 @@ interface CustomerClient {
     suspend fun createCustomer(@Body customer: CustomerDTO): Response<Customer>
 
     @PUT("/api/Customer/{id}")
-    suspend fun updateCustomer(@Path("id") id: Int, @Body customer: Customer): Response<Customer>
+    suspend fun updateCustomer(@Path("id") id: Int, @Body customer: CustomerDTO): Response<Customer>
 
     @DELETE("/api/Customer/{id}")
     suspend fun deleteCustomer(@Path("id") id: Int): Response<Unit>

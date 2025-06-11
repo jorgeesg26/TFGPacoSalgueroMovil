@@ -42,13 +42,15 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
         daysBetweenPayments = editing?.daysBetweenPayments?.toString() ?: ""
     }
 
+    Text("Crear Métodos de Pago")
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
         item {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(69.dp))
 
             Text(
                 text = if (editing != null) "Editar método de pago" else "Crear método de pago",

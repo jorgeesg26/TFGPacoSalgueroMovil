@@ -9,7 +9,7 @@ class CustomerRepository {
 
     suspend fun createCustomer(dto: CustomerDTO) = runCatching { api.createCustomer(dto) }
 
-    suspend fun updateCustomer(id: Int, customer: Customer) = runCatching { api.updateCustomer(id, customer) }
+    suspend fun updateCustomer(id: Int, dto: CustomerDTO) = runCatching { api.updateCustomer(id, dto) }
 
     suspend fun deleteCustomer(id: Int) = runCatching { api.deleteCustomer(id) }
 }

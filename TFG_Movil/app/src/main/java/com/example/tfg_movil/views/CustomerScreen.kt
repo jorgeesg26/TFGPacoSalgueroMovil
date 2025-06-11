@@ -45,87 +45,95 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
     val error by viewModel.error.collectAsState()
     val context = LocalContext.current
 
-    var nombre by remember { mutableStateOf("") }
-    var apellidos by remember { mutableStateOf("") }
-    var telefono by remember { mutableStateOf("") }
+    var cif by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var adress by remember { mutableStateOf("") }
+    var postalCode by remember { mutableStateOf("") }
+    var placeOfResidence by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
+    var adminEmail by remember { mutableStateOf("") }
     var paymentMethodId by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.loadCustomers()
     }
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
+    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         item {
+            Spacer(Modifier.height(69.dp))
             Text("Crear nuevo cliente", style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(8.dp))
 
-            TextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
-            TextField(value = apellidos, onValueChange = { apellidos = it }, label = { Text("Apellidos") })
-            TextField(value = telefono, onValueChange = { telefono = it }, label = { Text("Teléfono") })
+            TextField(value = cif, onValueChange = { cif = it }, label = { Text("CIF") })
+            TextField(value = name, onValueChange = { name = it }, label = { Text("Nombre") })
+            TextField(value = adress, onValueChange = { adress = it }, label = { Text("Dirección") })
+            TextField(value = postalCode, onValueChange = { postalCode = it }, label = { Text("Código Postal") })
+            TextField(value = placeOfResidence, onValueChange = { placeOfResidence = it }, label = { Text("Lugar de residencia") })
+            TextField(value = phoneNumber, onValueChange = { phoneNumber = it }, label = { Text("Teléfono") })
             TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-            TextField(
-                value = paymentMethodId,
-                onValueChange = { paymentMethodId = it },
-                label = { Text("ID de método de pago") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-            )
+            TextField(value = adminEmail, onValueChange = { adminEmail = it }, label = { Text("Email Administrativo") })
+            TextField(value = paymentMethodId, onValueChange = { paymentMethodId = it }, label = { Text("ID método de pago") })
 
             Spacer(Modifier.height(8.dp))
 
             Button(onClick = {
-                if (paymentMethodId.toIntOrNull() != null) {
+                if (
+                    cif.toIntOrNull() != null &&
+                    postalCode.toIntOrNull() != null &&
+                    phoneNumber.toIntOrNull() != null &&
+                    paymentMethodId.toIntOrNull() != null
+                ) {
                     val dto = CustomerDTO(
-                        nombre = nombre,
-                        apellidos = apellidos,
-                        telefono = telefono,
+                        cif = cif.toInt(),
+                        name = name,
+                        adress = adress,
+                        postalCode = postalCode.toInt(),
+                        placeOfResidence = placeOfResidence,
+                        phoneNumber = phoneNumber.toInt(),
                         email = email,
+                        adminEmail = adminEmail,
                         paymentMethodId = paymentMethodId.toInt()
                     )
                     viewModel.createCustomer(dto)
-                    nombre = ""; apellidos = ""; telefono = ""; email = ""; paymentMethodId = ""
+                    cif = ""; name = ""; adress = ""; postalCode = ""
+                    placeOfResidence = ""; phoneNumber = ""; email = ""; adminEmail = ""; paymentMethodId = ""
                 } else {
-                    Toast.makeText(context, "El método de pago debe ser un número", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Revisa los campos numéricos", Toast.LENGTH_SHORT).show()
                 }
             }) {
                 Text("Crear Cliente")
             }
 
             Spacer(Modifier.height(16.dp))
-
             if (error != null) {
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
-
             Text("Lista de clientes", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
         }
 
         items(customers) { customer ->
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
+                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
             ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Text("Nombre: ${customer.nombre} ${customer.apellidos}")
-                    Text("Teléfono: ${customer.telefono}")
+                Column(Modifier.padding(12.dp)) {
+                    Text("Nombre: ${customer.name}")
+                    Text("Teléfono: ${customer.phoneNumber}")
                     Text("Email: ${customer.email}")
-                    Text("Método de pago: ${customer.paymentMethodId}")
+                    Text("Dirección: ${customer.adress}")
+                    Text("Cód. Postal: ${customer.postalCode}")
+                    Text("CIF: ${customer.cif}")
+                    Text("Residencia: ${customer.placeOfResidence}")
+                    Text("Email admin: ${customer.adminEmail}")
+                    Text("Método de pago ID: ${customer.paymentMethodId}")
 
-                    Row(
-                        horizontalArrangement = Arrangement.End,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
+                    Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                         IconButton(onClick = {
                             viewModel.updateCustomer(
                                 customer.id,
-                                customer.copy(nombre = "Actualizado")
+                                customer.copy(name = "Actualizado")
                             )
                         }) {
                             Icon(Icons.Default.Edit, contentDescription = "Editar")
