@@ -85,6 +85,11 @@ fun NavigationDrawer(
             selectedIcon = Icons.Filled.Face,
             unselectedIcon = Icons.Outlined.Check,
             route = RutasNavegacion.Customer.route
+        ),NavigationItems(
+            title = "PaymentMethod",
+            selectedIcon = Icons.Filled.Face,
+            unselectedIcon = Icons.Outlined.Check,
+            route = RutasNavegacion.Customer.route
         )
 
     )

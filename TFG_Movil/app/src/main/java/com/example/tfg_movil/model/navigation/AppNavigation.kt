@@ -21,14 +21,20 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.ui.unit.dp
 import com.example.tfg_movil.viewmodel.ViewModelCustomer
+import com.example.tfg_movil.viewmodel.ViewModelPaymentMethod
 import com.example.tfg_movil.viewmodel.ViewModelService
 import com.example.tfg_movil.views.CustomerScreen
 import com.example.tfg_movil.views.Main
+import com.example.tfg_movil.views.PaymentMethodScreen
 import com.example.tfg_movil.views.ServiceScreen
 
 
 @Composable
-fun AppNavigation(navController: NavHostController, authState: AuthState, authViewModel: ViewModelAuth,serviceViewModel: ViewModelService,customerViewModel: ViewModelCustomer) {
+fun AppNavigation(navController: NavHostController, authState: AuthState, authViewModel: ViewModelAuth,
+                  serviceViewModel: ViewModelService,customerViewModel: ViewModelCustomer,
+                  paymentMethodViewModel: ViewModelPaymentMethod) {
+
+
     val context = LocalContext.current
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -64,8 +70,9 @@ fun AppNavigation(navController: NavHostController, authState: AuthState, authVi
             composable(RutasNavegacion.Customer.route) {
                 CustomerScreen(customerViewModel)
             }
-
-
+            composable(RutasNavegacion.PaymentMethod.route) {
+                PaymentMethodScreen(paymentMethodViewModel)
+            }
         }
     }
 }

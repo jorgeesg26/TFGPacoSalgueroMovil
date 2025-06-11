@@ -2,6 +2,7 @@ package com.example.tfg_movil.model.authentication.classes
 
 import com.example.tfg_movil.model.customer.CustomerClient
 import com.example.tfg_movil.model.services.ServiceClient
+import com.example.tfg_movil.model.paymentMethod.PaymentMethodClient
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -44,6 +45,9 @@ object RetrofitInstance {
     }
     val customerClient: CustomerClient by lazy {
         retrofit.create(CustomerClient::class.java)
+    }
+    val paymentMethodClient: PaymentMethodClient by lazy {
+        retrofit.create(PaymentMethodClient::class.java)
     }
 
 }

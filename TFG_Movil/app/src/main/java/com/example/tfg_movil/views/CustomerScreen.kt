@@ -55,85 +55,85 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
         viewModel.loadCustomers()
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState())
     ) {
-        Text("Crear nuevo cliente", style = MaterialTheme.typography.titleLarge)
+        item {
+            Text("Crear nuevo cliente", style = MaterialTheme.typography.titleLarge)
+            Spacer(Modifier.height(8.dp))
 
-        Spacer(Modifier.height(8.dp))
+            TextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
+            TextField(value = apellidos, onValueChange = { apellidos = it }, label = { Text("Apellidos") })
+            TextField(value = telefono, onValueChange = { telefono = it }, label = { Text("Teléfono") })
+            TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
+            TextField(
+                value = paymentMethodId,
+                onValueChange = { paymentMethodId = it },
+                label = { Text("ID de método de pago") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
 
-        TextField(value = nombre, onValueChange = { nombre = it }, label = { Text("Nombre") })
-        TextField(value = apellidos, onValueChange = { apellidos = it }, label = { Text("Apellidos") })
-        TextField(value = telefono, onValueChange = { telefono = it }, label = { Text("Teléfono") })
-        TextField(value = email, onValueChange = { email = it }, label = { Text("Email") })
-        TextField(
-            value = paymentMethodId,
-            onValueChange = { paymentMethodId = it },
-            label = { Text("ID de método de pago") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-        )
+            Spacer(Modifier.height(8.dp))
 
-        Spacer(Modifier.height(8.dp))
-
-        Button(onClick = {
-            if (paymentMethodId.toIntOrNull() != null) {
-                val dto = CustomerDTO(
-                    nombre = nombre,
-                    apellidos = apellidos,
-                    telefono = telefono,
-                    email = email,
-                    paymentMethodId = paymentMethodId.toInt()
-                )
-                viewModel.createCustomer(dto)
-                nombre = ""; apellidos = ""; telefono = ""; email = ""; paymentMethodId = ""
-            } else {
-                Toast.makeText(context, "El método de pago debe ser un número", Toast.LENGTH_SHORT).show()
+            Button(onClick = {
+                if (paymentMethodId.toIntOrNull() != null) {
+                    val dto = CustomerDTO(
+                        nombre = nombre,
+                        apellidos = apellidos,
+                        telefono = telefono,
+                        email = email,
+                        paymentMethodId = paymentMethodId.toInt()
+                    )
+                    viewModel.createCustomer(dto)
+                    nombre = ""; apellidos = ""; telefono = ""; email = ""; paymentMethodId = ""
+                } else {
+                    Toast.makeText(context, "El método de pago debe ser un número", Toast.LENGTH_SHORT).show()
+                }
+            }) {
+                Text("Crear Cliente")
             }
-        }) {
-            Text("Crear Cliente")
+
+            Spacer(Modifier.height(16.dp))
+
+            if (error != null) {
+                Text("Error: $error", color = MaterialTheme.colorScheme.error)
+            }
+
+            Text("Lista de clientes", style = MaterialTheme.typography.titleMedium)
+            Spacer(Modifier.height(8.dp))
         }
 
-        Spacer(Modifier.height(16.dp))
+        items(customers) { customer ->
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(modifier = Modifier.padding(12.dp)) {
+                    Text("Nombre: ${customer.nombre} ${customer.apellidos}")
+                    Text("Teléfono: ${customer.telefono}")
+                    Text("Email: ${customer.email}")
+                    Text("Método de pago: ${customer.paymentMethodId}")
 
-        if (error != null) {
-            Text("Error: $error", color = MaterialTheme.colorScheme.error)
-        }
-
-        Text("Lista de clientes", style = MaterialTheme.typography.titleMedium)
-
-        Spacer(Modifier.height(8.dp))
-
-        LazyColumn {
-            items(customers) { customer ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Column(modifier = Modifier.padding(12.dp)) {
-                        Text("Nombre: ${customer.nombre} ${customer.apellidos}")
-                        Text("Teléfono: ${customer.telefono}")
-                        Text("Email: ${customer.email}")
-                        Text("Método de pago: ${customer.paymentMethodId}")
-
-                        Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                            IconButton(onClick = {
-                                viewModel.updateCustomer(
-                                    customer.id,
-                                    customer.copy(nombre = "Actualizado")
-                                )
-                            }) {
-                                Icon(Icons.Default.Edit, contentDescription = "Editar")
-                            }
-                            IconButton(onClick = {
-                                viewModel.deleteCustomer(customer.id)
-                            }) {
-                                Icon(Icons.Default.Delete, contentDescription = "Eliminar")
-                            }
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        IconButton(onClick = {
+                            viewModel.updateCustomer(
+                                customer.id,
+                                customer.copy(nombre = "Actualizado")
+                            )
+                        }) {
+                            Icon(Icons.Default.Edit, contentDescription = "Editar")
+                        }
+                        IconButton(onClick = {
+                            viewModel.deleteCustomer(customer.id)
+                        }) {
+                            Icon(Icons.Default.Delete, contentDescription = "Eliminar")
                         }
                     }
                 }
@@ -141,3 +141,4 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
         }
     }
 }
+

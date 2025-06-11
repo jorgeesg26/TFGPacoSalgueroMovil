@@ -14,10 +14,12 @@ import com.example.tfg_movil.model.authentication.classes.RetrofitInstance
 import com.example.tfg_movil.model.customer.CustomerRepository
 import com.example.tfg_movil.model.navigation.AppNavigation
 import com.example.tfg_movil.model.navigation.NavigationDrawer
+import com.example.tfg_movil.model.paymentMethod.PaymentMethodRepository
 import com.example.tfg_movil.model.services.ServiceRepository
 import com.example.tfg_movil.ui.theme.TFG_MovilTheme
 import com.example.tfg_movil.viewmodel.ViewModelAuth
 import com.example.tfg_movil.viewmodel.ViewModelCustomer
+import com.example.tfg_movil.viewmodel.ViewModelPaymentMethod
 import com.example.tfg_movil.viewmodel.ViewModelService
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +28,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val context = LocalContext.current
+            val application = context.applicationContext as Application
             val serviceClient = RetrofitInstance.serviceClient
+            val paymentMethodClient = RetrofitInstance.paymentMethodClient
 
             val serviceViewModel: ViewModelService = viewModel {
                 ViewModelService(Application(),ServiceRepository(serviceClient))
@@ -34,6 +38,8 @@ class MainActivity : ComponentActivity() {
             val customerViewModel: ViewModelCustomer = viewModel {
                 ViewModelCustomer(CustomerRepository())
             }
+
+            val paymentMethodViewModel = ViewModelPaymentMethod(application, PaymentMethodRepository(paymentMethodClient))
 
 
             val authViewModel: ViewModelAuth = viewModel { ViewModelAuth(AuthRepository(), context) }
@@ -48,7 +54,8 @@ class MainActivity : ComponentActivity() {
                         authState = authViewModel.authState.collectAsState().value,
                         authViewModel = authViewModel,
                         serviceViewModel = serviceViewModel,
-                        customerViewModel = customerViewModel
+                        customerViewModel = customerViewModel,
+                        paymentMethodViewModel = paymentMethodViewModel
                     )
 
                 }

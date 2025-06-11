@@ -6,5 +6,5 @@ sealed class RutasNavegacion(val route: String) {
     object Register: RutasNavegacion("Register")
     object Servicios : RutasNavegacion("Servicios")
     object Customer : RutasNavegacion("Customer")
-
+    object PaymentMethod : RutasNavegacion("PaymentMethod")
 }
