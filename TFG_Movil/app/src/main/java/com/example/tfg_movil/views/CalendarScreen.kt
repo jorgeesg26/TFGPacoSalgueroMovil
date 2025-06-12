@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.tfg_movil.viewmodel.ViewModelAgenda
 import java.time.LocalDate
@@ -232,13 +233,17 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
                                                 color = MaterialTheme.colorScheme.onPrimaryContainer
                                             )
                                             eventosDelDia?.forEach { entrada ->
+                                                val nombrePaciente = entrada.paciente
+                                                val nombreServicio = entrada.service?.nombre ?: "Servicio"
                                                 Text(
-                                                    text = entrada.service?.nombre ?: "Evento",
+                                                    text = "$nombrePaciente - $nombreServicio",
                                                     style = MaterialTheme.typography.bodySmall,
                                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                    maxLines = 1
+                                                    maxLines = 1,
+                                                    overflow = TextOverflow.Ellipsis
                                                 )
                                             }
+
                                         }
                                     }
                                 }

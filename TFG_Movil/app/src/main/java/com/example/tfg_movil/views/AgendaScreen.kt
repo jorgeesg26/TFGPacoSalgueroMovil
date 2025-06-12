@@ -36,6 +36,8 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
     var observaciones by remember { mutableStateOf("") }
     var fechaHora by remember { mutableStateOf("") }
 
+    var ordenDescendente by remember { mutableStateOf(true) }
+
     val context = LocalContext.current
 
     // Cargar entradas al iniciar
@@ -241,11 +243,48 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
                         textAlign = TextAlign.Center
                     )
 
-                    Spacer(modifier = Modifier.height(16.dp))
-                }
+                    Spacer(modifier = Modifier.height(8.dp))
 
+                    // Filtro de fecha
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Ordenar por fecha:",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.inverseSurface
+                        )
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(
+                                selected = ordenDescendente,
+                                onClick = { ordenDescendente = true }
+                            )
+                            Text("Más recientes", style = MaterialTheme.typography.bodySmall)
+
+                            Spacer(modifier = Modifier.width(8.dp))
+
+                            RadioButton(
+                                selected = !ordenDescendente,
+                                onClick = { ordenDescendente = false }
+                            )
+                            Text("Más antiguas", style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                }
+                val entradasOrdenadas = if (ordenDescendente) {
+                    entradas.sortedByDescending { it.fechaHora }
+                } else {
+                    entradas.sortedBy { it.fechaHora }
+                }
                 // Items de la lista de entradas
-                items(entradas) { entrada ->
+                items(entradasOrdenadas) { entrada ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth(0.95f)
