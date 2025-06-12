@@ -5,6 +5,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
+// Repositorio que maneja la logica de autenticacion
 class AuthRepository {
 
     private val authClient = RetrofitInstance.authClient
@@ -36,6 +37,7 @@ class AuthRepository {
         contentResolver: ContentResolver
     ): Result<SignUpResponse> {
         return try {
+            // Convierte la imagen a MultipartBody.Part para la peticion
             val photoStream = contentResolver.openInputStream(profilePhotoUri)!!
             val photoBytes = photoStream.readBytes()
             photoStream.close()

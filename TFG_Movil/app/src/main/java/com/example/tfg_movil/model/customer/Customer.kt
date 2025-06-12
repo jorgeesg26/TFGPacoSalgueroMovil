@@ -1,5 +1,6 @@
 package com.example.tfg_movil.model.customer
 
+// Modelo de datos para lo que será un Paciente
 data class Customer(
     val id: Int,
     val cif: Int,

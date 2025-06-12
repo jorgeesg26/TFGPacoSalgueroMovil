@@ -3,6 +3,7 @@ package com.example.tfg_movil.model.services
 import com.google.gson.Gson
 import retrofit2.Response
 
+// Repositorio para servicios
 class ServiceRepository(private val serviceClient: ServiceClient) {
 
     suspend fun fetchServices() = runCatching {

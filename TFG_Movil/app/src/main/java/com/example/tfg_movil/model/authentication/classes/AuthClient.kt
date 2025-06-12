@@ -8,6 +8,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
+// Interfaz para las llamadas de autenticación al servidor
 interface AuthClient {
     @POST("/api/User/login")
     suspend fun login(@Body authRequest: AuthRequest): LoginResponse

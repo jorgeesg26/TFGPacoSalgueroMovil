@@ -2,7 +2,7 @@ package com.example.tfg_movil.model.paymentMethod
 
 
 import com.google.gson.annotations.SerializedName
-
+// Modelo de metodo de pago
 data class PaymentMethod(
     @SerializedName("id")
     val id: Int,

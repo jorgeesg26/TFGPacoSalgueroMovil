@@ -2,6 +2,7 @@ package com.example.tfg_movil.model.customer
 
 import com.example.tfg_movil.model.authentication.classes.RetrofitInstance
 
+// Repositorio para manejar operaciones de clientes
 class CustomerRepository {
     private val api = RetrofitInstance.customerClient
 

@@ -2,7 +2,7 @@ package com.example.tfg_movil.model.paymentMethod
 
 import retrofit2.Response
 import retrofit2.http.*
-
+// Interfaz para API de métodos de pago
 interface PaymentMethodClient {
     @GET("api/PaymentMethod")
     suspend fun getAll(): List<PaymentMethod>

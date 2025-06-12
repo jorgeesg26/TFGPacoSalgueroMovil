@@ -14,14 +14,18 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
+// Configuración de Retrofit para conexiones HTTPS
 object RetrofitInstance {
+
     // Para emulador Android (10.0.2.2 = localhost del host)
+    // La de development es "https://10.0.2.2:7077/"
     private const val BASE_URL = "https://10.0.2.2:7077/"
     private val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
         override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
         override fun getAcceptedIssuers() = arrayOf<X509Certificate>()
     })
+    // Configuración para aceptar todos los certificados
     private val unsafeOkHttpClient = OkHttpClient.Builder()
         .sslSocketFactory(
             SSLContext.getInstance("SSL").apply {

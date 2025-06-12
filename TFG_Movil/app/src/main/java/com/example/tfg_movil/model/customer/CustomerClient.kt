@@ -3,6 +3,7 @@ package com.example.tfg_movil.model.customer
 import retrofit2.http.*
 import retrofit2.Response
 
+// Interfaz Retrofit para operaciones CRUD de clientes
 interface CustomerClient {
 
     @GET("/api/Customer")

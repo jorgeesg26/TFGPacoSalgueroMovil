@@ -1,5 +1,6 @@
 package com.example.tfg_movil.model.navigation
 
+// Rutas de navegación principales
 sealed class RutasNavegacion(val route: String) {
     object Main : RutasNavegacion("Main")
     object Login : RutasNavegacion("Login")

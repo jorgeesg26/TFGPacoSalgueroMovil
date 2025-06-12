@@ -1,5 +1,6 @@
 package com.example.tfg_movil.model.paymentMethod
 
+// Interfaz para API de métodos de pago
 class PaymentMethodRepository(
     private val client: PaymentMethodClient
 ) {

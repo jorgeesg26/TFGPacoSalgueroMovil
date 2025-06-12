@@ -9,6 +9,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+// Interfaz para API de servicios
 interface ServiceClient {
     @GET("api/Service/get_services")
     suspend fun getAllServices(): List<Service>
