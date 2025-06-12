@@ -47,6 +47,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.res.stringResource
+import com.example.tfg_movil.R
+
 @Composable
 fun ServiceScreen() {
     val context = LocalContext.current
@@ -68,6 +71,11 @@ fun ServiceScreen() {
         mutableStateOf(editingService?.color ?: "")
     }
 
+    fun esColorHexValido(valor: String): Boolean {
+        return Regex("^#[0-9a-fA-F]{6}$").matches(valor)
+    }
+    val colorValido = esColorHexValido(color)
+
     LaunchedEffect(Unit) {
         viewModel.loadServices()
     }
@@ -88,7 +96,8 @@ fun ServiceScreen() {
             Spacer(Modifier.height(100.dp))
 
             Text(
-                text = if (editingService != null) "Editar servicio" else "Crear nuevo servicio",
+                text = if (editingService != null) stringResource(id = R.string.editarServicio)
+                    else stringResource(id = R.string.crearServicio),
                 style = MaterialTheme.typography.titleLarge
             )
 
@@ -97,19 +106,25 @@ fun ServiceScreen() {
             TextField(
                 value = nombre,
                 onValueChange = { nombre = it },
-                label = { Text("Nombre") },
+                label = { stringResource(id = R.string.nombre) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = abreviatura,
                 onValueChange = { abreviatura = it },
-                label = { Text("Abreviatura") },
+                label = { stringResource(id = R.string.abreviatura) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = color,
                 onValueChange = { color = it },
-                label = { Text("Color") },
+                label = { stringResource(id = R.string.abreviatura) },
+                isError = !colorValido && color.isNotEmpty(),
+                supportingText = {
+                    if (!colorValido && color.isNotEmpty()) {
+                        Text(stringResource(id = R.string.colorRequirement))
+                    }
+                },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -134,7 +149,8 @@ fun ServiceScreen() {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (editingService != null) "Guardar cambios" else "Crear servicio")
+                Text(if (editingService != null) stringResource(id = R.string.GuardarCambios)
+                    else stringResource(id = R.string.crearServicio))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -143,7 +159,7 @@ fun ServiceScreen() {
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
 
-            Text("Lista de servicios", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(id = R.string.listaServicios), style = MaterialTheme.typography.titleMedium)
 
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -156,9 +172,9 @@ fun ServiceScreen() {
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    Text("Nombre: ${service.nombre}")
-                    Text("Abreviatura: ${service.abreviatura}")
-                    Text("Color: ${service.color}")
+                    Text("${stringResource(R.string.nombre)}: ${service.nombre}")
+                    Text("${stringResource(R.string.abreviatura)}: ${service.abreviatura}")
+                    Text("${stringResource(R.string.color)}: ${service.color}")
                     Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
                         IconButton(onClick = {
                             viewModel.startEditing(service)

@@ -67,7 +67,7 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
         OutlinedTextField(
             value = nickname,
             onValueChange = { nickname = it },
-            label = { Text("Nickname") }
+            label = { Text(stringResource(id = R.string.nombre)) }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -104,7 +104,7 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
-            label = { Text("Confirm Password") },
+            label = { Text(stringResource(id = R.string.confirmPassword)) },
             visualTransformation = PasswordVisualTransformation()
         )
 
@@ -114,7 +114,7 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
             onClick = { launcher.launch("image/*") },
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
         ) {
-            Text("Seleccionar foto de perfil")
+            Text(stringResource(id = R.string.selectPFP))
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -131,7 +131,7 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
                         context.contentResolver
                     )
                 } else {
-                    Toast.makeText(context, "Selecciona una foto de perfil", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "PFP", Toast.LENGTH_SHORT).show()
                 }
             },
             enabled = authState != AuthState.Loading,

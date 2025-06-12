@@ -8,7 +8,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.tfg_movil.R
 import com.example.tfg_movil.model.agenda.EntradaAgenda
 import com.example.tfg_movil.viewmodel.ViewModelAgenda
 import java.text.SimpleDateFormat
@@ -20,7 +22,6 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
     val entradas by viewModel.entradas.collectAsState()
     val error by viewModel.error.collectAsState()
 
-    // Campos del formulario
     var cliente by remember { mutableStateOf("") }
     var centroTrabajo by remember { mutableStateOf("") }
     var serviceId by remember { mutableStateOf("") }
@@ -39,49 +40,49 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
         item {
             Spacer(Modifier.height(100.dp))
 
-            Text("Crear nueva entrada de agenda", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(id = R.string.crearNuevaEntrada), style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(8.dp))
 
             TextField(
                 value = cliente,
                 onValueChange = { cliente = it },
-                label = { Text("Cliente") },
+                label = { Text(stringResource(id = R.string.cliente)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = centroTrabajo,
                 onValueChange = { centroTrabajo = it },
-                label = { Text("Centro de Trabajo") },
+                label = { Text(stringResource(id = R.string.centroTrabajo)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = serviceId,
                 onValueChange = { serviceId = it },
-                label = { Text("ID del Servicio") },
+                label = { Text(stringResource(id = R.string.idServicio)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = paciente,
                 onValueChange = { paciente = it },
-                label = { Text("Paciente") },
+                label = { Text(stringResource(id = R.string.paciente)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = precio,
                 onValueChange = { precio = it },
-                label = { Text("Precio (€)") },
+                label = { Text(stringResource(id = R.string.precio)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = observaciones,
                 onValueChange = { observaciones = it },
-                label = { Text("Observaciones") },
+                label = { Text(stringResource(id = R.string.observaciones)) },
                 modifier = Modifier.fillMaxWidth()
             )
             TextField(
                 value = fechaHora,
                 onValueChange = { fechaHora = it },
-                label = { Text("Fecha y Hora (yyyy-MM-ddTHH:mm)") },
+                label = { Text(stringResource(id = R.string.fechaHora)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -126,7 +127,7 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Crear Entrada")
+                Text(stringResource(id = R.string.crearNuevaEntrada))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -135,7 +136,7 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
 
-            Text("Lista de entradas", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(id = R.string.listaEntradas), style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
@@ -146,13 +147,13 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
                 elevation = CardDefaults.cardElevation(2.dp)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    Text("Fecha: ${entrada.fechaHora}")
-                    Text("Cliente: ${entrada.cliente}")
-                    Text("Centro: ${entrada.centroTrabajo}")
-                    Text("Servicio: ${entrada.service?.nombre ?: entrada.serviceId}")
-                    Text("Precio: €${entrada.precio}")
-                    entrada.paciente?.let { Text("Paciente: $it") }
-                    entrada.observaciones?.let { Text("Observaciones: $it") }
+                    Text("${stringResource(R.string.fechaHora)}: ${entrada.fechaHora}")
+                    Text("${stringResource(R.string.cliente)}: ${entrada.cliente}")
+                    Text("${stringResource(R.string.centroTrabajo)}: ${entrada.centroTrabajo}")
+                    Text("${stringResource(R.string.servicio)}: ${entrada.service?.nombre ?: entrada.serviceId}")
+                    Text("${stringResource(R.string.precio)}: €${entrada.precio}")
+                    entrada.paciente?.let { Text("${stringResource(R.string.paciente)}: $it") }
+                    entrada.observaciones?.let { Text("${stringResource(R.string.observaciones)}: $it") }
                 }
             }
         }

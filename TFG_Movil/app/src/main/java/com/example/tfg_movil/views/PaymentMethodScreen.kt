@@ -13,8 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.tfg_movil.R
 import com.example.tfg_movil.model.paymentMethod.PaymentMethod
 import com.example.tfg_movil.viewmodel.ViewModelPaymentMethod
 
@@ -42,7 +44,7 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
         daysBetweenPayments = editing?.daysBetweenPayments?.toString() ?: ""
     }
 
-    Text("Crear Métodos de Pago")
+    Text(stringResource(id = R.string.crearMetodosPago))
 
     LazyColumn(
         modifier = Modifier
@@ -53,7 +55,7 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
             Spacer(modifier = Modifier.height(69.dp))
 
             Text(
-                text = if (editing != null) "Editar método de pago" else "Crear método de pago",
+                text = if (editing != null) stringResource(id = R.string.editarMetodoPago) else stringResource(id = R.string.crearMetodoPago),
                 style = MaterialTheme.typography.titleLarge
             )
 
@@ -62,14 +64,14 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
             TextField(
                 value = method,
                 onValueChange = { method = it },
-                label = { Text("Método") },
+                label = { Text(stringResource(id = R.string.metodo)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
             TextField(
                 value = installments,
                 onValueChange = { installments = it },
-                label = { Text("Cuotas") },
+                label = { Text(stringResource(id = R.string.cuotas)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -77,7 +79,7 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
             TextField(
                 value = firstPaymentDays,
                 onValueChange = { firstPaymentDays = it },
-                label = { Text("Días hasta primer pago") },
+                label = { Text(stringResource(id = R.string.diasHastaPrimerPago)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -85,7 +87,7 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
             TextField(
                 value = daysBetweenPayments,
                 onValueChange = { daysBetweenPayments = it },
-                label = { Text("Días entre pagos") },
+                label = { Text(stringResource(id = R.string.diasEntrePagos)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -123,7 +125,8 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(if (editing != null) "Guardar cambios" else "Crear método")
+                Text(if (editing != null) stringResource(id = R.string.GuardarCambios)
+                    else stringResource(id = R.string.crearMetodoPago))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -133,7 +136,7 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
-            Text("Lista de métodos de pago", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(id = R.string.listaMetodosPago), style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
@@ -145,10 +148,10 @@ fun PaymentMethodScreen(viewModel: ViewModelPaymentMethod) {
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
-                    Text("Método: ${item.method}")
-                    Text("Cuotas: ${item.installments}")
-                    Text("Días hasta primer pago: ${item.firstPaymentDays}")
-                    Text("Días entre pagos: ${item.daysBetweenPayments}")
+                    Text("${stringResource(R.string.metodo)}: ${item.method}")
+                    Text("${stringResource(R.string.cuotas)}: ${item.installments}")
+                    Text("${stringResource(R.string.diasHastaPrimerPago)}: ${item.firstPaymentDays}")
+                    Text("${stringResource(R.string.diasEntrePagos)}: ${item.daysBetweenPayments}")
 
                     Row(
                         horizontalArrangement = Arrangement.End,

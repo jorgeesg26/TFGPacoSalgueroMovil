@@ -39,7 +39,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
     val year = currentDate.value.year
     val firstDayOfMonth = LocalDate.of(year, month, 1)
     val daysInMonth = month.length(firstDayOfMonth.isLeapYear)
-    val startDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7 // Lunes = 1 -> 1 % 7 = 1 (L a D = 0-6)
+    val startDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
 
     val daysList = List(startDayOfWeek) { null } + (1..daysInMonth).map { it }
 
