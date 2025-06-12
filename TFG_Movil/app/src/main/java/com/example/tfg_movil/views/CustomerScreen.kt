@@ -97,7 +97,7 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
-                    // Form Card
+                    Spacer(modifier = Modifier.height(75.dp))
                     Card(
                         modifier = Modifier
                             .fillMaxWidth(0.95f)

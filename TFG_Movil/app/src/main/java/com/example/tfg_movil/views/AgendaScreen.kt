@@ -1,20 +1,25 @@
 package com.example.tfg_movil.views
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.tfg_movil.R
 import com.example.tfg_movil.model.agenda.EntradaAgenda
 import com.example.tfg_movil.viewmodel.ViewModelAgenda
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 @Composable
@@ -38,126 +43,273 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
         viewModel.cargarTodas()
     }
 
-    LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        item {
-            // Formulario para nueva entrada
-            Spacer(Modifier.height(100.dp))
+    val backgroundGradient = Brush.verticalGradient(
+        listOf(
+            Color(0xFF9BB5D6),
+            Color(0xFF6B9BD8),
+            Color(0xFF4A7FB8)
+        )
+    )
 
-            Text(stringResource(id = R.string.crearNuevaEntrada), style = MaterialTheme.typography.titleLarge)
-            Spacer(Modifier.height(8.dp))
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.surface
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = backgroundGradient)
+                .padding(padding)
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    // Formulario para nueva entrada
+                    Spacer(Modifier.height(100.dp))
 
-            TextField(
-                value = cliente,
-                onValueChange = { cliente = it },
-                label = { Text(stringResource(id = R.string.cliente)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = centroTrabajo,
-                onValueChange = { centroTrabajo = it },
-                label = { Text(stringResource(id = R.string.centroTrabajo)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = serviceId,
-                onValueChange = { serviceId = it },
-                label = { Text(stringResource(id = R.string.idServicio)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = paciente,
-                onValueChange = { paciente = it },
-                label = { Text(stringResource(id = R.string.paciente)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = precio,
-                onValueChange = { precio = it },
-                label = { Text(stringResource(id = R.string.precio)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = observaciones,
-                onValueChange = { observaciones = it },
-                label = { Text(stringResource(id = R.string.observaciones)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-            TextField(
-                value = fechaHora,
-                onValueChange = { fechaHora = it },
-                label = { Text(stringResource(id = R.string.fechaHora)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(
-                onClick = {
-                    try {
-                        val parsedFecha = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault()).parse(fechaHora)
-                        // 2025-06-15T10:30
-                        if (
-                            parsedFecha != null &&
-                            serviceId.toIntOrNull() != null &&
-                            precio.toDoubleOrNull() != null
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f)
+                            .padding(vertical = 8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 8.dp
+                        ),
+                        shape = RoundedCornerShape(20.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier
+                                .padding(24.dp)
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            val entrada = EntradaAgenda(
-                                fechaHora = parsedFecha,
-                                cliente = cliente,
-                                centroTrabajo = centroTrabajo,
-                                serviceId = serviceId.toInt(),
-                                paciente = paciente.takeIf { it.isNotBlank() },
-                                precio = precio.toDouble(),
-                                observaciones = observaciones.takeIf { it.isNotBlank() }
+                            Text(
+                                text = stringResource(id = R.string.crearNuevaEntrada),
+                                style = MaterialTheme.typography.headlineMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                textAlign = TextAlign.Center
                             )
-                            viewModel.crearEntrada(entrada)
 
-                            cliente = ""
-                            centroTrabajo = ""
-                            serviceId = ""
-                            paciente = ""
-                            precio = ""
-                            observaciones = ""
-                            fechaHora = ""
+                            Spacer(Modifier.height(24.dp))
 
-                            Toast.makeText(context, "Entrada creada", Toast.LENGTH_SHORT).show()
-                        } else {
-                            Toast.makeText(context, "Campos numéricos o fecha inválidos", Toast.LENGTH_SHORT).show()
+                            TextField(
+                                value = cliente,
+                                onValueChange = { cliente = it },
+                                label = { Text(stringResource(id = R.string.cliente)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = centroTrabajo,
+                                onValueChange = { centroTrabajo = it },
+                                label = { Text(stringResource(id = R.string.centroTrabajo)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = serviceId,
+                                onValueChange = { serviceId = it },
+                                label = { Text(stringResource(id = R.string.idServicio)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = paciente,
+                                onValueChange = { paciente = it },
+                                label = { Text(stringResource(id = R.string.paciente)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = precio,
+                                onValueChange = { precio = it },
+                                label = { Text(stringResource(id = R.string.precio)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = observaciones,
+                                onValueChange = { observaciones = it },
+                                label = { Text(stringResource(id = R.string.observaciones)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(Modifier.height(12.dp))
+
+                            TextField(
+                                value = fechaHora,
+                                onValueChange = { fechaHora = it },
+                                label = { Text(stringResource(id = R.string.fechaHora)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp)
+                            )
+
+                            Spacer(modifier = Modifier.height(24.dp))
+
+                            Button(
+                                onClick = {
+                                    try {
+                                        val parsedFecha = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault()).parse(fechaHora)
+                                        // 2025-06-15T10:30
+                                        if (
+                                            parsedFecha != null &&
+                                            serviceId.toIntOrNull() != null &&
+                                            precio.toDoubleOrNull() != null
+                                        ) {
+                                            val entrada = EntradaAgenda(
+                                                fechaHora = parsedFecha,
+                                                cliente = cliente,
+                                                centroTrabajo = centroTrabajo,
+                                                serviceId = serviceId.toInt(),
+                                                paciente = paciente.takeIf { it.isNotBlank() },
+                                                precio = precio.toDouble(),
+                                                observaciones = observaciones.takeIf { it.isNotBlank() }
+                                            )
+                                            viewModel.crearEntrada(entrada)
+
+                                            cliente = ""
+                                            centroTrabajo = ""
+                                            serviceId = ""
+                                            paciente = ""
+                                            precio = ""
+                                            observaciones = ""
+                                            fechaHora = ""
+
+                                            Toast.makeText(context, "Entrada creada", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(context, "Campos numéricos o fecha inválidos", Toast.LENGTH_SHORT).show()
+                                        }
+                                    } catch (e: Exception) {
+                                        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                                    }
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text(
+                                    text = stringResource(id = R.string.crearNuevaEntrada),
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                            }
+
+                            if (error != null) {
+                                Spacer(modifier = Modifier.height(16.dp))
+                                Text(
+                                    text = "Error: $error",
+                                    color = MaterialTheme.colorScheme.error,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                            }
                         }
-                    } catch (e: Exception) {
-                        Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(id = R.string.crearNuevaEntrada))
-            }
+                }
 
-            Spacer(modifier = Modifier.height(16.dp))
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
 
-            if (error != null) {
-                Text("Error: $error", color = MaterialTheme.colorScheme.error)
-            }
-            // Listado de entradas
-            Text(stringResource(id = R.string.listaEntradas), style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+                    // Listado de entradas
+                    Text(
+                        text = stringResource(id = R.string.listaEntradas),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.inverseSurface,
+                        textAlign = TextAlign.Center
+                    )
 
-        // Items de la lista de entradas
-        items(entradas) { entrada ->
-            Card(modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 4.dp),
-                elevation = CardDefaults.cardElevation(2.dp)
-            ) {
-                Column(modifier = Modifier.padding(12.dp)) {
-                    Text("${stringResource(R.string.fechaHora)}: ${entrada.fechaHora}")
-                    Text("${stringResource(R.string.cliente)}: ${entrada.cliente}")
-                    Text("${stringResource(R.string.centroTrabajo)}: ${entrada.centroTrabajo}")
-                    Text("${stringResource(R.string.servicio)}: ${entrada.service?.nombre ?: entrada.serviceId}")
-                    Text("${stringResource(R.string.precio)}: €${entrada.precio}")
-                    entrada.paciente?.let { Text("${stringResource(R.string.paciente)}: $it") }
-                    entrada.observaciones?.let { Text("${stringResource(R.string.observaciones)}: $it") }
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+
+                // Items de la lista de entradas
+                items(entradas) { entrada ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(0.95f)
+                            .padding(vertical = 6.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        ),
+                        elevation = CardDefaults.cardElevation(
+                            defaultElevation = 4.dp
+                        ),
+                        shape = RoundedCornerShape(16.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = "${stringResource(R.string.fechaHora)}: ${entrada.fechaHora}",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${stringResource(R.string.cliente)}: ${entrada.cliente}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${stringResource(R.string.centroTrabajo)}: ${entrada.centroTrabajo}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${stringResource(R.string.servicio)}: ${entrada.service?.nombre ?: entrada.serviceId}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "${stringResource(R.string.precio)}: €${entrada.precio}",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            entrada.paciente?.let {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "${stringResource(R.string.paciente)}: $it",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            entrada.observaciones?.let {
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = "${stringResource(R.string.observaciones)}: $it",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
