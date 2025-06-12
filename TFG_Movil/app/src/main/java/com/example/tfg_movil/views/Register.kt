@@ -34,14 +34,16 @@ fun Register(viewModelAuth: ViewModelAuth, navController: NavController) {
     var profilePhotoUri by remember { mutableStateOf<Uri?>(null) }
     val authState by viewModelAuth.authState.collectAsState()
 
-    // Launcher para seleccionar la imagen
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         profilePhotoUri = uri
     }
 
     LaunchedEffect(authState) {
         when (authState) {
-            is AuthState.Authenticated -> navController.navigate(RutasNavegacion.Main.route)
+            is AuthState.Authenticated ->
+                navController.navigate(RutasNavegacion.Main.route) {
+                    popUpTo(RutasNavegacion.Login.route) { inclusive = true }
+                }
             is AuthState.Error -> {
                 Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_SHORT).show()
                 viewModelAuth.resetAuthState()

@@ -47,7 +47,11 @@ class MainActivity : ComponentActivity() {
             val paymentMethodViewModel = ViewModelPaymentMethod(application, PaymentMethodRepository(paymentMethodClient))
 
 
-            val authViewModel: ViewModelAuth = viewModel { ViewModelAuth(AuthRepository(), context) }
+            val authViewModel: ViewModelAuth = viewModel {
+                ViewModelAuth(AuthRepository(), context).apply {
+                    loadCredentials()
+                }
+            }
 
             val agendaViewModel = ViewModelAgenda(application, AgendaRepository(agendaClient))
 

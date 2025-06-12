@@ -3,6 +3,7 @@ package com.example.tfg_movil.views
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -50,7 +52,10 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
 
     LaunchedEffect(authState) {
         when (authState) {
-            is AuthState.Authenticated -> navController.navigate(RutasNavegacion.Main.route)
+            is AuthState.Authenticated ->
+                    navController.navigate(RutasNavegacion.Main.route) {
+                        popUpTo(RutasNavegacion.Login.route) { inclusive = true }
+            }
             is AuthState.Error -> {
                 Toast.makeText(context, (authState as AuthState.Error).message, Toast.LENGTH_SHORT).show()
                 viewModelAuth.resetAuthState()
@@ -59,6 +64,14 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
             else -> Unit
          }
     }
+
+    if (authState is AuthState.Idle) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),

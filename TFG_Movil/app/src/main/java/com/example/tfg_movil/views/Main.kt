@@ -16,6 +16,7 @@ import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -44,11 +45,27 @@ fun Main(
     navController: NavHostController,
     authViewModel: ViewModelAuth
 ) {
-    var showDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
     val authState by authViewModel.authState.collectAsState()
 
-    LaunchedEffect(Unit) { }
+    if (authState is AuthState.Idle) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        MainContent(navController, authViewModel, authState)
+    }
+}
+
+@Composable
+private fun MainContent(
+    navController: NavHostController,
+    authViewModel: ViewModelAuth,
+    authState: AuthState
+) {
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold { paddingValues ->
         Column(
@@ -73,7 +90,6 @@ fun Main(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-
             Text(
                 text = if (authState is AuthState.Authenticated) {
                     "${stringResource(id = R.string.Welcome)} ${(authState as AuthState.Authenticated).email} !"
@@ -86,14 +102,11 @@ fun Main(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Hacer primero el diseño completo en el front angular y traer aquí
-
-            Spacer(modifier = Modifier.height(20.dp))
-
             UserActionButton(navController, authViewModel)
         }
     }
 }
+
 
 @Composable
 fun NavigationButton(text: String, onClick: () -> Unit) {

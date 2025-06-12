@@ -10,6 +10,7 @@ import com.example.tfg_movil.model.authentication.DataStoreManager
 import com.example.tfg_movil.model.authentication.classes.AuthRepository
 import com.example.tfg_movil.model.authentication.classes.AuthState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -65,14 +66,8 @@ class ViewModelAuth(
         }
     }
 
-    fun signUp(
-        nickname: String,
-        email: String,
-        password: String,
-        confirmPassword: String,
-        profilePhotoUri: android.net.Uri,
-        contentResolver: ContentResolver
-    ) {
+    fun signUp(nickname: String, email: String, password: String, confirmPassword: String,
+                profilePhotoUri: android.net.Uri, contentResolver: ContentResolver) {
         _authState.value = AuthState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -87,7 +82,7 @@ class ViewModelAuth(
                                 appContext,
                                 response.accessToken,
                                 email,
-                                userId = -1 // en el registro no recibes el userId, puedes ignorarlo o usar -1
+                                userId = -1
                             )
                             _authState.value = AuthState.Authenticated(
                                 accessToken = response.accessToken,
