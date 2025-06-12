@@ -42,6 +42,7 @@ import com.example.tfg_movil.viewmodel.ViewModelAuth
 
 @Composable
 fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
+    // Estados del formulario
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var user_id by remember { mutableStateOf("") }
@@ -49,7 +50,7 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
     val authState by viewModelAuth.authState.collectAsState()
     val context = LocalContext.current
 
-
+    // Manejo de estados de autenticación
     LaunchedEffect(authState) {
         when (authState) {
             is AuthState.Authenticated ->
@@ -65,6 +66,7 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
          }
     }
 
+    // Mostrar carga mientras se verifica estado
     if (authState is AuthState.Idle) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -114,6 +116,7 @@ fun Login(viewModelAuth: ViewModelAuth, navController: NavController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Botón de login
         Button(
             onClick = { viewModelAuth.login(email, password ) },
             enabled = authState != AuthState.Loading,

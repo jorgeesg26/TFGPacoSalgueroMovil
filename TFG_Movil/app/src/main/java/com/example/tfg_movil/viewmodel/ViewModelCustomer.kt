@@ -8,6 +8,7 @@ import com.example.tfg_movil.model.customer.CustomerRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+// ViewModel para gestión de clientes
 class ViewModelCustomer(private val repository: CustomerRepository) : ViewModel() {
 
     private val _customers = MutableStateFlow<List<Customer>>(emptyList())
@@ -16,6 +17,7 @@ class ViewModelCustomer(private val repository: CustomerRepository) : ViewModel(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    // Carga todos los clientes
     fun loadCustomers() {
         viewModelScope.launch {
             repository.fetchCustomers()
@@ -24,6 +26,7 @@ class ViewModelCustomer(private val repository: CustomerRepository) : ViewModel(
         }
     }
 
+    // CRUD de clientes
     fun createCustomer(dto: CustomerDTO) {
         viewModelScope.launch {
             repository.createCustomer(dto)

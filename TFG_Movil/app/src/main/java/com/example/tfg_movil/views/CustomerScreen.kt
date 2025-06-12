@@ -53,10 +53,12 @@ import com.example.tfg_movil.model.customer.CustomerDTO
 import com.example.tfg_movil.viewmodel.ViewModelCustomer
 @Composable
 fun CustomerScreen(viewModel: ViewModelCustomer) {
+    // Estados y datos
     val customers by viewModel.customers.collectAsState()
     val error by viewModel.error.collectAsState()
     val context = LocalContext.current
 
+    // Estados para campos del formulario
     var cif by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var adress by remember { mutableStateOf("") }
@@ -123,7 +125,7 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
 
                             Spacer(modifier = Modifier.height(24.dp))
 
-                            // First row of fields
+                            // Campos del formulario organizados en filas
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -226,6 +228,7 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
 
                             Spacer(modifier = Modifier.height(24.dp))
 
+                            // Botón de creación y validación del cliente
                             Button(
                                 onClick = {
                                     if (
@@ -291,6 +294,7 @@ fun CustomerScreen(viewModel: ViewModelCustomer) {
                     Spacer(modifier = Modifier.height(16.dp))
                 }
 
+                // Lista de clientes
                 items(customers) { customer ->
                     Card(
                         modifier = Modifier

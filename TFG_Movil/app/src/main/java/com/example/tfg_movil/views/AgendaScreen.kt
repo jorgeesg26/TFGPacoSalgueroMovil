@@ -22,6 +22,7 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
     val entradas by viewModel.entradas.collectAsState()
     val error by viewModel.error.collectAsState()
 
+    // Estados para los campos del formulario
     var cliente by remember { mutableStateOf("") }
     var centroTrabajo by remember { mutableStateOf("") }
     var serviceId by remember { mutableStateOf("") }
@@ -32,12 +33,14 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
 
     val context = LocalContext.current
 
+    // Cargar entradas al iniciar
     LaunchedEffect(Unit) {
         viewModel.cargarTodas()
     }
 
     LazyColumn(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         item {
+            // Formulario para nueva entrada
             Spacer(Modifier.height(100.dp))
 
             Text(stringResource(id = R.string.crearNuevaEntrada), style = MaterialTheme.typography.titleLarge)
@@ -135,11 +138,12 @@ fun AgendaScreen(viewModel: ViewModelAgenda) {
             if (error != null) {
                 Text("Error: $error", color = MaterialTheme.colorScheme.error)
             }
-
+            // Listado de entradas
             Text(stringResource(id = R.string.listaEntradas), style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
+        // Items de la lista de entradas
         items(entradas) { entrada ->
             Card(modifier = Modifier
                 .fillMaxWidth()

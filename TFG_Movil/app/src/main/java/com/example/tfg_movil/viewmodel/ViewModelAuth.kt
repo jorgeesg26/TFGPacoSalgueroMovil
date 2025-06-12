@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+// ViewModel para manejar autenticación
 class ViewModelAuth(
     private val authRepository: AuthRepository,
     context: Context
@@ -27,10 +28,12 @@ class ViewModelAuth(
 
     private val appContext = context.applicationContext
 
+    // Maneja login con email/contraseña
     fun login(emailOrNickname: String, password: String) {
         _authState.value = AuthState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
+            // Lógica de autenticación
             try {
                 val result = authRepository.login(emailOrNickname, password)
 
@@ -66,6 +69,7 @@ class ViewModelAuth(
         }
     }
 
+    // Registra nuevo usuario
     fun signUp(nickname: String, email: String, password: String, confirmPassword: String,
                 profilePhotoUri: android.net.Uri, contentResolver: ContentResolver) {
         _authState.value = AuthState.Loading
@@ -117,6 +121,7 @@ class ViewModelAuth(
         _authState.value = AuthState.Idle
     }
 
+    // Carga credenciales guardadas, como el token y otros datos varios
     fun loadCredentials() {
         viewModelScope.launch {
             val accessToken = DataStoreManager.getAccessToken(appContext).firstOrNull()

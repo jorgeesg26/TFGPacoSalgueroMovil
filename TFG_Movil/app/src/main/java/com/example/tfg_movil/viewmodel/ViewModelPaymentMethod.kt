@@ -9,6 +9,7 @@ import com.example.tfg_movil.model.authentication.DataStoreManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+// ViewModel para métodos de pago
 
 class ViewModelPaymentMethod(
     application: Application,
@@ -20,6 +21,7 @@ class ViewModelPaymentMethod(
     private val _methods = MutableStateFlow<List<PaymentMethod>>(emptyList())
     val methods: StateFlow<List<PaymentMethod>> = _methods
 
+    // Edición de métodos
     private val _editing = MutableStateFlow<PaymentMethod?>(null)
     val editing: StateFlow<PaymentMethod?> = _editing
 
@@ -34,6 +36,7 @@ class ViewModelPaymentMethod(
         }
     }
 
+    // Operaciones CRUD...
     fun create(method: PaymentMethod) {
         viewModelScope.launch {
             repository.create(method)

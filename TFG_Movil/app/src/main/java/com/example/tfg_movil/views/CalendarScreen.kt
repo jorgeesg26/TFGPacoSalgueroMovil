@@ -32,9 +32,11 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CalendarScreen(viewModel: ViewModelAgenda) {
+    // Estados y datos del calendario
     val entradas by viewModel.entradas.collectAsState()
     val currentDate = remember { mutableStateOf(LocalDate.now()) }
 
+    // Cálculos para el mes actual
     val month = currentDate.value.month
     val year = currentDate.value.year
     val firstDayOfMonth = LocalDate.of(year, month, 1)
@@ -43,6 +45,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
 
     val daysList = List(startDayOfWeek) { null } + (1..daysInMonth).map { it }
 
+    // Cargar entradas al cambiar de mes
     LaunchedEffect(currentDate.value) {
         viewModel.cargarMes(year, month.value)
     }
@@ -50,6 +53,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
     Column(modifier = Modifier.padding(16.dp)) {
         Spacer(Modifier.height(100.dp))
 
+        // Botones de navegación del mes
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
@@ -70,6 +74,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
 
         Spacer(Modifier.height(8.dp))
 
+        // Encabezados de días de la semana
         Row(modifier = Modifier.fillMaxWidth()) {
             listOf("L", "M", "X", "J", "V", "S", "D").forEach {
                 Text(it, modifier = Modifier.weight(1f))
@@ -86,6 +91,7 @@ fun CalendarScreen(viewModel: ViewModelAgenda) {
                 val day = daysList[index]
                 val fecha = day?.let { LocalDate.of(year, month, it) }
                 val formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH)
+                // Filtrar eventos para el día actual
                 val eventosDelDia = fecha?.let { f ->
                     entradas.filter {
                         LocalDateTime.parse(it.fechaHora.toString(), formatter).toLocalDate() == f

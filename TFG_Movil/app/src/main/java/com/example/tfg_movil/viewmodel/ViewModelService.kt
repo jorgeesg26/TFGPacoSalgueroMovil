@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+// ViewModel para gestión de servicios
 class ViewModelService(
     application: Application,
     private val repository: ServiceRepository
@@ -23,6 +24,7 @@ class ViewModelService(
     private val _error = MutableStateFlow<String?>(null)
     val error: StateFlow<String?> = _error
 
+    // Servicio en edicion
     private val _editingService = MutableStateFlow<Service?>(null)
     val editingService: StateFlow<Service?> = _editingService
 
@@ -39,6 +41,7 @@ class ViewModelService(
         }
     }
 
+    // Operaciones CRUD
     fun createService(service: Service) {
         viewModelScope.launch {
             repository.createService(service)
